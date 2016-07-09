@@ -8,8 +8,8 @@ android {
         applicationId "com.androidstatic.lib"
         minSdkVersion 15
         targetSdkVersion 23
-        versionCode 1
-        versionName "1.0"
+        versionCode "${VERSION_CODE}".toInteger()
+        versionName "${VERSION_NAME}"
     }
     buildTypes {
         release {
@@ -26,4 +26,5 @@ dependencies {
     compile project(':libutils')
     compile project(':libwidget')
 
+    compile 'com.android.support:design:23.4.0'
 }
