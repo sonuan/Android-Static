@@ -1,0 +1,1 @@
+include ':app', ':libhttp', ':libutils', ':libcore', ':libwidget'
