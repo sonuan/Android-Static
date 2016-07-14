@@ -7,16 +7,22 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.TextView;
 
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.androidstatic.lib.http.CustomRequest;
+import com.androidstatic.lib.http.HttpClientRequest;
 import com.androidstatic.lib.utils.DeviceUtils;
 import com.androidstatic.lib.utils.DisplayUtil;
 import com.androidstatic.lib.utils.L;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
-    public class Image{
+    public class Image {
         private int width;
 
         public Image(int width) {
@@ -66,7 +72,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         list.add(new Image(3));
         list.add(new Image(4));
         list.add(new Image(5));
-//        L.i("mmmmmm");
+        //        L.i("mmmmmm");
         L.i("mmmmmmmmm", list);
     }
 
@@ -87,6 +93,54 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onClick(View v) {
-        text();
+        //        text();
+
+        getDemoData("Android", "10", new Response.Listener() {
+            @Override
+            public void onResponse(Object response) {
+                L.i(response.toString());
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                error.printStackTrace();
+            }
+        }, "");
+    }
+
+
+    /**
+     * 使用和参数配置范例
+     *
+     * @param param1
+     * @param param2
+     * @param listener
+     * @param errorListener
+     */
+    public void getDemoData(String param1,
+                            String param2,
+                            Response.Listener listener,
+                            Response.ErrorListener errorListener, String tag) {
+        Map<String, String> params = new HashMap<>();
+        params.put("category", param1);
+        params.put("count", param2);
+        params.put("page", "1");
+
+        CustomRequest request = new CustomRequest.RequestBuilder()
+//                                .post()//不设置的话默认GET 但是设置了参数就不需要了。。。
+                .url("http://gank.io/api/search/query/listview/category/Android/count/1/page/1")
+                //url会统一配置到requestUrl类中
+//                .addMethodParams("") //请求的方法名
+                // 添加参数方法1 适用参数比较多的情况下
+                                .params(params)
+                // 添加参数方法2
+//                .addParams("category", param1)//添加参数1
+                //                .addParams("count", param2)//添加参数2
+                //                .clazz(Test.calss) //如果设置了返回类型，会自动解析返回model 如果不设置会直接返回json数据;
+                .successListener(listener)//获取数据成功的listener
+                .errorListener(errorListener)//获取数据异常的listener
+                .build();
+        HttpClientRequest.getInstance(this).addRequest(request, tag);
+        //将请求add到队列中。并设置tag  并需要相应activity onStop方法中调用cancel方法
     }
 }

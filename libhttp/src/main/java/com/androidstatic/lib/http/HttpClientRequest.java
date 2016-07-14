@@ -38,7 +38,7 @@ public class HttpClientRequest {
         if (mRequestQueue == null) {
             // getApplicationContext() is key, it keeps you from leaking the
             // Activity or BroadcastReceiver if someone passes one in.
-            mRequestQueue = Volley.newRequestQueue(mCtx.getApplicationContext());
+            mRequestQueue = Volley.newRequestQueue(mCtx.getApplicationContext(), new OkHttpStack());
         }
         return mRequestQueue;
     }
@@ -51,4 +51,27 @@ public class HttpClientRequest {
     public <T> void addRequest(Request<T> request) {
         getRequestQueue().add(request);
     }
+
+    /**
+     * Adds a request to the Volley request queue
+     *
+     * @param request is the request to add to the Volley queuest
+     * @param tag     is the tag identifying the request
+     */
+    public <T> void addRequest(Request<T> request, String tag) {
+        request.setTag(tag);
+        getRequestQueue().add(request);
+    }
+
+    /**
+     * Cancels all the request in the Volley queue for a given tag
+     *
+     * @param tag associated with the Volley requests to be cancelled
+     */
+    public void cancelAllRequests(String tag) {
+        if (getRequestQueue() != null) {
+            getRequestQueue().cancelAll(tag);
+        }
+    }
+
 }
