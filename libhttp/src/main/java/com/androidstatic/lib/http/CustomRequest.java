@@ -6,11 +6,12 @@ import com.android.volley.ParseError;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.toolbox.HttpHeaderParser;
+import com.androidstatic.lib.http.params.HttpHeader;
+import com.androidstatic.lib.http.params.HttpParams;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 
 import java.io.UnsupportedEncodingException;
-import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -23,24 +24,23 @@ import java.util.Map;
 public class CustomRequest<T> extends Request<T> {
     private final Gson gson = new Gson();
     private final Class<T> clazz;
-    private final Map<String, String> headers;
     private final Response.Listener<T> listener;
-    private Map<String, String> params;
-
+    private HttpParams mHttpParams;
+    private HttpHeader mHttpHeader;
 
     /**
      * Make a GET request and return a parsed object from JSON.
      *
      * @param url    URL of the request to make
      * @param clazz  Relevant class object, for Gson's reflection
-     * @param params Map of request params
+     * @param params Map of request httpParams
      */
-    public CustomRequest(String url, Class<T> clazz, Map<String, String> params,
+    public CustomRequest(String url, Class<T> clazz, HttpParams httpParams,
                          Response.Listener<T> listener, Response.ErrorListener errorListener) {
         super(Method.GET, url, errorListener);
         this.clazz = clazz;
-        this.headers = null;
-        this.params = params;
+        mHttpHeader = null;
+        mHttpParams = httpParams;
         this.listener = listener;
     }
 
@@ -49,15 +49,15 @@ public class CustomRequest<T> extends Request<T> {
      *
      * @param url     URL of the request to make
      * @param clazz   Relevant class object, for Gson's reflection
-     * @param headers Map of request headers
+     * @param headers Map of request httpHeader
      */
-    public CustomRequest(int method, String url, Class<T> clazz, Map<String, String> headers,
-                         Map<String, String> params,
+    public CustomRequest(int method, String url, Class<T> clazz, HttpHeader httpHeader,
+                         HttpParams httpParams,
                          Response.Listener<T> listener, Response.ErrorListener errorListener) {
         super(method, url, errorListener);
         this.clazz = clazz;
-        this.headers = headers;
-        this.params = params;
+        this.mHttpHeader = httpHeader;
+        this.mHttpParams = mHttpParams;
         this.listener = listener;
     }
 
@@ -67,20 +67,20 @@ public class CustomRequest<T> extends Request<T> {
     public CustomRequest(RequestBuilder builder) {
         super(builder.method, builder.url, builder.errorListener);
         clazz = builder.clazz;
-        headers = builder.headers;
+        mHttpHeader = builder.httpHeader;
         listener = builder.successListener;
-        params = builder.params;
+        mHttpParams = builder.httpParams;
     }
 
 
     @Override
     public Map<String, String> getHeaders() throws AuthFailureError {
-        return headers != null ? headers : super.getHeaders();
+        return mHttpHeader != null && mHttpHeader.getHeaders() != null ? mHttpHeader.getHeaders() : super.getHeaders();
     }
 
     @Override
     protected Map<String, String> getParams() throws AuthFailureError {
-        return params != null ? params : super.getParams();
+        return mHttpParams != null && mHttpParams.getParams() != null ? mHttpParams.getParams() : super.getParams();
     }
 
     @Override
@@ -120,8 +120,8 @@ public class CustomRequest<T> extends Request<T> {
         private Class clazz;
         private Response.Listener successListener;
         private Response.ErrorListener errorListener;
-        private Map<String, String> headers;
-        private Map<String, String> params;
+        private HttpHeader httpHeader;
+        private HttpParams httpParams;
 
         public RequestBuilder url(String url) {
             this.url = url;
@@ -154,38 +154,38 @@ public class CustomRequest<T> extends Request<T> {
         }
 
         public RequestBuilder addHeader(String key, String value) {
-            if (headers == null)
-                headers = new HashMap<>();
-            headers.put(key, value);
+            if (httpHeader == null)
+                httpHeader = new HttpHeader();
+            httpHeader.addHeader(key, value);
             return this;
         }
 
-        public RequestBuilder headers(Map<String, String> headers) {
-            this.headers = headers;
+        public RequestBuilder headers(HttpHeader header) {
+            this.httpHeader = header;
             return this;
         }
 
-        public RequestBuilder params(Map<String, String> params) {
+        public RequestBuilder params(HttpParams httpParams) {
             post();
-            this.params = params;
+            this.httpParams = httpParams;
             return this;
         }
 
         public RequestBuilder addParams(String key, String value) {
-            if (params == null) {
-                params = new HashMap<>();
+            if (httpParams == null) {
+                httpParams = new HttpParams();
                 post();
             }
-            params.put(key, value);
+            httpParams.put(key, value);
             return this;
         }
 
         public RequestBuilder addMethodParams(String method) {
-            if (params == null) {
-                params = new HashMap<>();
+            if (httpParams == null) {
+                httpParams = new HttpParams();
                 post();
             }
-            params.put("method", method);
+//            httpParams.put("method", method);
             return this;
         }
 

@@ -11,14 +11,13 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.androidstatic.lib.http.CustomRequest;
 import com.androidstatic.lib.http.HttpClientRequest;
+import com.androidstatic.lib.http.params.HttpParams;
 import com.androidstatic.lib.utils.DeviceUtils;
 import com.androidstatic.lib.utils.DisplayUtil;
 import com.androidstatic.lib.utils.L;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -121,18 +120,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             String param2,
                             Response.Listener listener,
                             Response.ErrorListener errorListener, String tag) {
-        Map<String, String> params = new HashMap<>();
+        HttpParams params = new HttpParams();
         params.put("category", param1);
         params.put("count", param2);
         params.put("page", "1");
 
         CustomRequest request = new CustomRequest.RequestBuilder()
+                .method(HttpParams.HttpMethod.GET)
 //                                .post()//不设置的话默认GET 但是设置了参数就不需要了。。。
                 .url("http://gank.io/api/search/query/listview/category/Android/count/1/page/1")
                 //url会统一配置到requestUrl类中
 //                .addMethodParams("") //请求的方法名
                 // 添加参数方法1 适用参数比较多的情况下
-                                .params(params)
+//                                .params(params)
                 // 添加参数方法2
 //                .addParams("category", param1)//添加参数1
                 //                .addParams("count", param2)//添加参数2
