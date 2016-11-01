@@ -129,6 +129,18 @@ public abstract class ExpandFragment extends Fragment {
 			changeFragment(resId, findFragmentByTag(resId, tag), tag);
 		}
 
+		Object contentView = onCreateView();
+		if (contentView == null) {
+			throw new NullPointerException("onCreateView() is null, please set LayoutResID or View to return.");
+		}
+		if (!(contentView instanceof Integer) && !(contentView instanceof View)) {
+			throw new IllegalArgumentException("onCreateView() value must be LayoutResID or View.");
+		} else if (contentView instanceof Integer) {
+			setContentView((Integer) contentView);
+		} else if (contentView instanceof View) {
+			setContentView((View) contentView);
+		}
+
 		initCreate(savedInstanceState);
 		
 	}
@@ -156,6 +168,12 @@ public abstract class ExpandFragment extends Fragment {
 	 */
 	public void initConfig(Bundle savedInstanceState) {
 	}
+
+	/**
+	 * 获取ContentView
+	 * @return contentView, must be LayoutResID or View.
+	 */
+	protected abstract Object onCreateView();
 
 	/**
 	 * 初始化Views方法
@@ -209,12 +227,12 @@ public abstract class ExpandFragment extends Fragment {
 	 * @param layoutResID
 	 *            主View资源ID
 	 */
-	public void setContentView(int layoutResID) {
+	private void setContentView(int layoutResID) {
 		mContentView = mInflater.inflate(layoutResID, mDecorView, false);
 		mDecorView.addView(mContentView);
 	}
 
-	public void setContentView(View view) {
+	private void setContentView(View view) {
 		mContentView = view;
 		mDecorView.addView(mContentView);
 	}

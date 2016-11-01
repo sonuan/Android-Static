@@ -62,6 +62,19 @@ public abstract class ExpandFragmentActivity extends FragmentActivity {
 	protected final void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
+		Object contentView = onCreateView();
+		if (contentView == null) {
+			throw new NullPointerException("onCreateView() is null, please set LayoutResID or View to return.");
+		}
+		if (!(contentView instanceof Integer) && !(contentView instanceof View)) {
+			throw new IllegalArgumentException("onCreateView() value must be LayoutResID or View.");
+		} else if (contentView instanceof Integer) {
+			super.setContentView((Integer) contentView);
+		} else if (contentView instanceof View) {
+			super.setContentView((View) contentView);
+		}
+		ButterKnife.bind(this);
+
 		mFManager = getSupportFragmentManager();
 		if (savedInstanceState != null) {
 			mStackFragments = (HashMap<Integer, ArrayList<String>>) savedInstanceState
@@ -83,7 +96,24 @@ public abstract class ExpandFragmentActivity extends FragmentActivity {
 		}
 
 		initCreate(savedInstanceState);
-		ButterKnife.bind(this);
+	}
+
+	@Deprecated
+	@Override
+	public final void setContentView(int layoutResID) {
+		throw new RuntimeException("Use onCreateView() to set the value.");
+	}
+
+	@Deprecated
+	@Override
+	public final void setContentView(View view) {
+		throw new RuntimeException("Use onCreateView() to set the value.");
+	}
+
+	@Deprecated
+	@Override
+	public final void setContentView(View view, ViewGroup.LayoutParams params) {
+		throw new RuntimeException("Use onCreateView() to set the value.");
 	}
 
 	/**
@@ -109,6 +139,12 @@ public abstract class ExpandFragmentActivity extends FragmentActivity {
 	 */
 	public void initConfig(Bundle savedInstanceState) {
 	}
+
+	/**
+	 * 获取ContentView
+	 * @return contentView, must be LayoutResID or View.
+	 */
+	protected abstract Object onCreateView();
 
 	/**
 	 * 初始化Views方法
