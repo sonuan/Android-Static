@@ -25,7 +25,6 @@ import android.net.Uri;
 import android.provider.ContactsContract;
 import android.provider.MediaStore;
 import android.provider.Settings;
-import android.support.v4.app.ActivityCompat;
 
 /**
  * Intent操作
@@ -101,9 +100,9 @@ public class IntentUtils {
     public static void call(Context context, String number) {
         Uri uri = Uri.parse("tel:" + number);
         Intent intent = new Intent(Intent.ACTION_CALL, uri);
-        if (ActivityCompat.checkSelfPermission(context, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
-            return;
-        }
+        //if (ActivityCompat.checkSelfPermission(context, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+        //    return;
+        //}
         context.startActivity(intent);
     }
 

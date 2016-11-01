@@ -10,8 +10,8 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="com.androidstatic.lib.MainActivity"
-    tools:showIn="@layout/activity_main"
+    tools:context="com.androidstatic.lib.activity.MainActivity2"
+    tools:showIn="@layout/activity_main2"
     android:orientation="vertical"
     >
 
