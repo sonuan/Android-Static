@@ -14,6 +14,7 @@ public class LoadingAndRetryManager {
     public static int BASE_LOADING_LAYOUT_ID = NO_LAYOUT_ID;
     public static int BASE_RETRY_LAYOUT_ID = NO_LAYOUT_ID;
     public static int BASE_EMPTY_LAYOUT_ID = NO_LAYOUT_ID;
+    private final OnLoadingAndRetryListener mOnLoadingAndRetryListener;
 
     public LoadingAndRetryLayout mLoadingAndRetryLayout;
 
@@ -72,10 +73,7 @@ public class LoadingAndRetryManager {
         setupLoadingLayout(listener, loadingAndRetryLayout);
         setupRetryLayout(listener, loadingAndRetryLayout);
         setupEmptyLayout(listener, loadingAndRetryLayout);
-        //callback
-        listener.setRetryEvent(loadingAndRetryLayout.getRetryView());
-        listener.setLoadingEvent(loadingAndRetryLayout.getLoadingView());
-        listener.setEmptyEvent(loadingAndRetryLayout.getEmptyView());
+        mOnLoadingAndRetryListener = listener;
         mLoadingAndRetryLayout = loadingAndRetryLayout;
     }
 
@@ -135,23 +133,34 @@ public class LoadingAndRetryManager {
     public void showLoading() {
         mLoadingAndRetryLayout.showLoading();
         mViewStatus = ViewStatus.LOADING;
+        //callback
+        if (mOnLoadingAndRetryListener != null && mLoadingAndRetryLayout != null) {
+            mOnLoadingAndRetryListener.setLoadingEvent(mLoadingAndRetryLayout.getLoadingView());
+        }
+
     }
 
     public void showRetry() {
         mLoadingAndRetryLayout.showRetry();
         mViewStatus = ViewStatus.RETRY;
-
+        //callback
+        if (mOnLoadingAndRetryListener != null && mLoadingAndRetryLayout != null) {
+            mOnLoadingAndRetryListener.setRetryEvent(mLoadingAndRetryLayout.getRetryView());
+        }
     }
 
     public void showContent() {
         mLoadingAndRetryLayout.showContent();
         mViewStatus = ViewStatus.CONTENT;
-
     }
 
     public void showEmpty() {
         mLoadingAndRetryLayout.showEmpty();
         mViewStatus = ViewStatus.EMPTY;
+        //callback
+        if (mOnLoadingAndRetryListener != null && mLoadingAndRetryLayout != null) {
+            mOnLoadingAndRetryListener.setEmptyEvent(mLoadingAndRetryLayout.getEmptyView());
+        }
     }
 
     public boolean isLoading() {

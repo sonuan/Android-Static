@@ -48,13 +48,22 @@ public class MutileStatusViewActivity extends ExpandActivity {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.btn_loading:
+                view.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        hideLoading();
+                    }
+                }, 3000);
                 showLoading();
                 break;
             case R.id.btn_retry:
+                showRetry();
                 break;
             case R.id.btn_content:
+                showContent();
                 break;
             case R.id.btn_empty:
+                showEmpty();
                 break;
         }
     }

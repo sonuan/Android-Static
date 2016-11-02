@@ -5,13 +5,15 @@ import android.os.Looper;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewStub;
 import android.widget.FrameLayout;
 
 /**
  * Created by zhy on 15/8/26.
  */
-public class LoadingAndRetryLayout extends FrameLayout {
+public class LoadingAndRetryLayout extends FrameLayout implements View.OnTouchListener {
     private View mLoadingView;
     private View mRetryView;
     private View mContentView;
@@ -19,6 +21,9 @@ public class LoadingAndRetryLayout extends FrameLayout {
     private LayoutInflater mInflater;
 
     private static final String TAG = LoadingAndRetryLayout.class.getSimpleName();
+    private ViewStub mLoadingViewStub;
+    private ViewStub mEmptyViewStub;
+    private ViewStub mRetryViewStub;
 
 
     public LoadingAndRetryLayout(Context context, AttributeSet attrs, int defStyleAttr) {
@@ -40,6 +45,9 @@ public class LoadingAndRetryLayout extends FrameLayout {
     }
 
     public void showLoading() {
+        if (mLoadingView == null && mLoadingViewStub != null) {
+            mLoadingView = mLoadingViewStub.inflate();
+        }
         if (isMainThread()) {
             showView(mLoadingView);
         } else {
@@ -53,6 +61,9 @@ public class LoadingAndRetryLayout extends FrameLayout {
     }
 
     public void showRetry() {
+        if (mRetryView == null && mRetryViewStub != null) {
+            mRetryView = mRetryViewStub.inflate();
+        }
         if (isMainThread()) {
             showView(mRetryView);
         } else {
@@ -80,6 +91,9 @@ public class LoadingAndRetryLayout extends FrameLayout {
     }
 
     public void showEmpty() {
+        if (mEmptyView == null && mRetryViewStub != null) {
+            mEmptyView = mEmptyViewStub.inflate();
+        }
         if (isMainThread()) {
             showView(mEmptyView);
         } else {
@@ -95,16 +109,16 @@ public class LoadingAndRetryLayout extends FrameLayout {
 
     private void showView(View view) {
         if (view == null) return;
-
+        view.setOnTouchListener(this);
         if (view == mLoadingView) {
             mLoadingView.setVisibility(View.VISIBLE);
+            //if (mContentView != null) mContentView.setVisibility(View.GONE);
             if (mRetryView != null) mRetryView.setVisibility(View.GONE);
-            if (mContentView != null) mContentView.setVisibility(View.GONE);
             if (mEmptyView != null) mEmptyView.setVisibility(View.GONE);
         } else if (view == mRetryView) {
             mRetryView.setVisibility(View.VISIBLE);
+            //if (mContentView != null) mContentView.setVisibility(View.GONE);
             if (mLoadingView != null) mLoadingView.setVisibility(View.GONE);
-            if (mContentView != null) mContentView.setVisibility(View.GONE);
             if (mEmptyView != null) mEmptyView.setVisibility(View.GONE);
         } else if (view == mContentView) {
             mContentView.setVisibility(View.VISIBLE);
@@ -113,9 +127,9 @@ public class LoadingAndRetryLayout extends FrameLayout {
             if (mEmptyView != null) mEmptyView.setVisibility(View.GONE);
         } else if (view == mEmptyView) {
             mEmptyView.setVisibility(View.VISIBLE);
+            //if (mContentView != null) mContentView.setVisibility(View.GONE);
             if (mLoadingView != null) mLoadingView.setVisibility(View.GONE);
             if (mRetryView != null) mRetryView.setVisibility(View.GONE);
-            if (mContentView != null) mContentView.setVisibility(View.GONE);
         }
 
 
@@ -126,15 +140,32 @@ public class LoadingAndRetryLayout extends FrameLayout {
     }
 
     public View setLoadingView(int layoutId) {
-        return setLoadingView(mInflater.inflate(layoutId, this, false));
+        mLoadingViewStub = new ViewStub(getContext());
+        mLoadingViewStub.setLayoutResource(layoutId);
+        return setLoadingView(mLoadingViewStub);
     }
 
     public View setEmptyView(int layoutId) {
-        return setEmptyView(mInflater.inflate(layoutId, this, false));
+        mEmptyViewStub = new ViewStub(getContext());
+        mEmptyViewStub.setLayoutResource(layoutId);
+        return setEmptyView(mEmptyViewStub);
     }
 
     public View setRetryView(int layoutId) {
-        return setRetryView(mInflater.inflate(layoutId, this, false));
+        mRetryViewStub = new ViewStub(getContext());
+        mRetryViewStub.setLayoutResource(layoutId);
+        return setRetryView(mRetryViewStub);
+    }
+
+    public ViewStub setLoadingView(ViewStub viewStub) {
+        ViewStub loadingView = mLoadingViewStub;
+        if (loadingView != null) {
+            Log.w(TAG, "you have already set a loading viewstub and would be instead of this new one.");
+        }
+        removeView(loadingView);
+        addView(viewStub);
+        mLoadingViewStub = viewStub;
+        return mLoadingViewStub;
     }
 
     public View setLoadingView(View view) {
@@ -148,6 +179,17 @@ public class LoadingAndRetryLayout extends FrameLayout {
         return mLoadingView;
     }
 
+    public ViewStub setEmptyView(ViewStub view) {
+        View emptyView = mEmptyViewStub;
+        if (emptyView != null) {
+            Log.w(TAG, "you have already set a empty viewstub and would be instead of this new one.");
+        }
+        removeView(emptyView);
+        addView(view);
+        mEmptyViewStub = view;
+        return mEmptyViewStub;
+    }
+
     public View setEmptyView(View view) {
         View emptyView = mEmptyView;
         if (emptyView != null) {
@@ -157,6 +199,18 @@ public class LoadingAndRetryLayout extends FrameLayout {
         addView(view);
         mEmptyView = view;
         return mEmptyView;
+    }
+
+    public ViewStub setRetryView(ViewStub view) {
+        View retryView = mRetryViewStub;
+        if (retryView != null) {
+            Log.w(TAG, "you have already set a retry viewstub and would be instead of this new one.");
+        }
+        removeView(retryView);
+        addView(view);
+        mRetryViewStub = view;
+        return mRetryViewStub;
+
     }
 
     public View setRetryView(View view) {
@@ -174,7 +228,7 @@ public class LoadingAndRetryLayout extends FrameLayout {
     public View setContentView(View view) {
         View contentView = mContentView;
         if (contentView != null) {
-            Log.w(TAG, "you have already set a retry view and would be instead of this new one.");
+            Log.w(TAG, "you have already set a content view and would be instead of this new one.");
         }
         removeView(contentView);
         addView(view);
@@ -196,5 +250,10 @@ public class LoadingAndRetryLayout extends FrameLayout {
 
     public View getEmptyView() {
         return mEmptyView;
+    }
+
+    @Override
+    public boolean onTouch(View v, MotionEvent event) {
+        return true;
     }
 }

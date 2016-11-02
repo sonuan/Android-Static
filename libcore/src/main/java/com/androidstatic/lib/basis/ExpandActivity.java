@@ -2,6 +2,7 @@ package com.androidstatic.lib.basis;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.util.Log;
 import android.util.SparseArray;
 import android.view.View;
 import android.view.ViewGroup;
@@ -122,7 +123,13 @@ public abstract class ExpandActivity extends Activity {
             mLoadingAndRetryManager = new LoadingAndRetryManager(this, new OnLoadingAndRetryListener() {
                 @Override
                 public void setRetryEvent(View retryView) {
-
+                    Log.i("Expand", "setRetryEvent: " + retryView);
+                    retryView.findViewById(R.id.btn_retry).setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Log.i("Expand", "setRetryEvent: onClick:");
+                        }
+                    });
                 }
             });
         }
@@ -159,6 +166,35 @@ public abstract class ExpandActivity extends Activity {
      * 隐藏默认的进度控件
      */
     public final void hideLoading() {
+        if (mLoadingAndRetryManager != null) {
+            mLoadingAndRetryManager.showContent();
+        }
+    }
+
+    public final void showRetry() {
+        if (mLoadingAndRetryManager != null) {
+            mLoadingAndRetryManager.showRetry();
+        }
+    }
+    public final void hideRetry() {
+        if (mLoadingAndRetryManager != null) {
+            mLoadingAndRetryManager.showContent();
+        }
+    }
+
+    public final void showEmpty() {
+        if (mLoadingAndRetryManager != null) {
+            mLoadingAndRetryManager.showEmpty();
+        }
+    }
+
+    public final void hideEmpty() {
+        if (mLoadingAndRetryManager != null) {
+            mLoadingAndRetryManager.showContent();
+        }
+    }
+
+    public final void showContent() {
         if (mLoadingAndRetryManager != null) {
             mLoadingAndRetryManager.showContent();
         }
