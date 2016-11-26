@@ -107,7 +107,7 @@ public abstract class ExpandFragment extends Fragment {
 	@SuppressLint("UseSparseArrays")
 	@SuppressWarnings("unchecked")
 	@Override
-	public void onViewCreated(View view, Bundle savedInstanceState) {
+	public final void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
 		mChildFManager = getChildFragmentManager();
 		if (savedInstanceState != null) {

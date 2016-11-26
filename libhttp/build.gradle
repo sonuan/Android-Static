@@ -19,7 +19,6 @@ android {
 }
 
 dependencies {
-    testCompile "junit:junit:${JUNIT_VERSION}"
     compile fileTree(include: ['*.jar'], dir: 'libs')
     compile project(':libutils')
     compile 'com.mcxiaoke.volley:library:1.0.19'

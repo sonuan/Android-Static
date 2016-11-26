@@ -2,6 +2,7 @@ package com.androidstatic.lib.basis;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.util.SparseArray;
 import android.view.View;
@@ -20,7 +21,7 @@ import butterknife.ButterKnife;
  *
  * @author kycq
  */
-public abstract class ExpandActivity extends Activity {
+public abstract class ExpandActivity extends AppCompatActivity {
     /** 管理多种状态，加载中视图、错误视图、空数据视图、网络异常视图、内容视图 */
     private LoadingAndRetryManager mLoadingAndRetryManager;
 

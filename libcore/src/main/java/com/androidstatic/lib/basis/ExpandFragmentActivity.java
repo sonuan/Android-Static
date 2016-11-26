@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.AppCompatActivity;
 import android.util.SparseArray;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,7 +29,7 @@ import butterknife.ButterKnife;
  * @author kycq
  * 
  */
-public abstract class ExpandFragmentActivity extends FragmentActivity {
+public abstract class ExpandFragmentActivity extends AppCompatActivity {
 	/** 管理多种状态，加载中视图、错误视图、空数据视图、网络异常视图、内容视图*/
 	private LoadingAndRetryManager mLoadingAndRetryManager;
 
