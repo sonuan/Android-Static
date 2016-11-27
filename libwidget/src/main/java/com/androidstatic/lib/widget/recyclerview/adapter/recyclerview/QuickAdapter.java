@@ -9,7 +9,7 @@ import java.util.List;
 /**
  * Created by jianghejie on 15/8/8.
  */
-public abstract class QuickAdapter<T> extends BaseQuickAdapter<T, BaseAdapterHelper> {
+public abstract class QuickAdapter<T> extends BaseQuickAdapter<T, BaseAdapterViewHolder> {
 
     /**
      * Create a QuickAdapter.

@@ -27,7 +27,7 @@ import java.util.List;
  * <p/>
  * Abstraction class of a BaseAdapter in which you only need
  * to provide the convert() implementation.<br/>
- * Using the provided BaseAdapterHelper, your code is minimalist.
+ * Using the provided BaseViewHolder, your code is minimalist.
  * @param <T> The type of the items in the list.
  */
 public abstract class EnhancedQuickAdapter<T> extends QuickAdapter<T> {
@@ -53,7 +53,7 @@ public abstract class EnhancedQuickAdapter<T> extends QuickAdapter<T> {
     }
 
     @Override
-    protected final void convert(BaseAdapterHelper helper, T item) {
+    protected final void convert(BaseViewHolder helper, T item) {
         boolean itemChanged = helper.associatedObject == null || !helper.associatedObject.equals(item);
         helper.associatedObject = item;
         convert(helper, item, itemChanged);
@@ -64,5 +64,5 @@ public abstract class EnhancedQuickAdapter<T> extends QuickAdapter<T> {
      * @param item        The item you should adapt the view to.
      * @param itemChanged Whether or not the helper was bound to another object before.
      */
-    protected abstract void convert(BaseAdapterHelper helper, T item, boolean itemChanged);
+    protected abstract void convert(BaseViewHolder helper, T item, boolean itemChanged);
 }

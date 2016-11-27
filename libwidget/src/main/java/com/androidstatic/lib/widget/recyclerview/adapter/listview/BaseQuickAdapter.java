@@ -27,7 +27,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public abstract class BaseQuickAdapter<T, H extends BaseAdapterHelper> extends BaseAdapter {
+public abstract class BaseQuickAdapter<T, H extends BaseViewHolder> extends BaseAdapter {
 
     protected static final String TAG = BaseQuickAdapter.class.getSimpleName();
 
@@ -204,7 +204,7 @@ public abstract class BaseQuickAdapter<T, H extends BaseAdapterHelper> extends B
     protected abstract void convert(H helper, T item);
 
     /**
-     * You can override this method to use a custom BaseAdapterHelper in order to fit your needs
+     * You can override this method to use a custom BaseViewHolder in order to fit your needs
      *
      * @param position    The position of the item within the adapter's data set of the item whose
      *                    view we want.
@@ -218,7 +218,7 @@ public abstract class BaseQuickAdapter<T, H extends BaseAdapterHelper> extends B
      *                    is always of the right type (see
      *                    {@link #getViewTypeCount()} and {@link #getItemViewType(int)} ).
      * @param parent      The parent that this view will eventually be attached to
-     * @return An instance of BaseAdapterHelper
+     * @return An instance of BaseViewHolder
      */
     protected abstract H getAdapterHelper(int position, View convertView, ViewGroup parent);
 

@@ -1,18 +1,19 @@
 package com.androidstatic.lib.widget.recyclerview.adapter.recyclerview;
 
-import android.support.v7.widget.RecyclerView;
 import android.util.SparseArray;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.androidstatic.lib.widget.pullrecycle.BaseViewHolder;
+
 /**
  * Created by jianghejie on 15/8/8.
  */
-public class BaseAdapterHelper extends RecyclerView.ViewHolder{
+public class BaseAdapterViewHolder extends BaseViewHolder {
     private SparseArray<View> views;
-    public BaseAdapterHelper(View itemView){
+    public BaseAdapterViewHolder(View itemView){
         super(itemView);
         this.views = new SparseArray<View>();
     }
@@ -41,5 +42,15 @@ public class BaseAdapterHelper extends RecyclerView.ViewHolder{
             views.put(viewId, view);
         }
         return (T) view;
+    }
+
+    @Override
+    public void onItemClick(View view, int position) {
+
+    }
+
+    @Override
+    public void onBindViewHolder(int position) {
+
     }
 }

@@ -14,8 +14,8 @@ import java.util.List;
 /**
  * Created by jianghejie on 15/8/8.
  */
-public abstract class BaseQuickAdapter<T, H extends BaseAdapterHelper> extends RecyclerView
-        .Adapter<BaseAdapterHelper> implements View.OnClickListener {
+public abstract class BaseQuickAdapter<T, H extends BaseAdapterViewHolder> extends RecyclerView
+        .Adapter<BaseAdapterViewHolder> implements View.OnClickListener {
     protected static final String TAG = BaseQuickAdapter.class.getSimpleName();
 
     protected final Context context;
@@ -98,7 +98,7 @@ public abstract class BaseQuickAdapter<T, H extends BaseAdapterHelper> extends R
     private int mCreateCount = 0;
 
     @Override
-    public BaseAdapterHelper onCreateViewHolder(ViewGroup viewGroup, int viewType) {
+    public BaseAdapterViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
         Log.i("onCreateViewHolder", "------new----->>>>" + ++mCreateCount);
         View view = null;
         if (mMultiItemTypeSupport != null) {
@@ -109,12 +109,12 @@ public abstract class BaseQuickAdapter<T, H extends BaseAdapterHelper> extends R
                     false);
         }
         view.setOnClickListener(this);
-        BaseAdapterHelper vh = new BaseAdapterHelper(view);
+        BaseAdapterViewHolder vh = new BaseAdapterViewHolder(view);
         return vh;
     }
 
     @Override
-    public void onBindViewHolder(BaseAdapterHelper helper, int position) {
+    public void onBindViewHolder(BaseAdapterViewHolder helper, int position) {
         helper.itemView.setTag(position);
         T item = getItem(position);
         convert((H) helper, item);
