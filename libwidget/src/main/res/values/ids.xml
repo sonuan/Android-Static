@@ -5,4 +5,5 @@
     <item name="swipeRefreshLayout" type="id" />
     <item name="recyclerView" type="id" />
     <item name="pullRecycler" type="id" />
+    <item name="contentViewTag" type="id" />
 </resources>
