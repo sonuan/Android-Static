@@ -8,7 +8,6 @@ package com.androidstatic.lib.http.rxhttp;
 
 import android.content.Context;
 import android.text.TextUtils;
-import android.util.Log;
 
 import java.lang.ref.WeakReference;
 import java.util.HashMap;
@@ -30,6 +29,7 @@ public class RtHttp{
     private Observable observable;
     private static Context context;
     private boolean isShowWaitingDialog;
+    public static boolean isDebug = true;
 
     /**设置Context,使用弱引用
      * @param ct
@@ -118,7 +118,7 @@ public class RtHttp{
             if(!TextUtils.isEmpty(baseUrl)){
                 rtBuilder.baseUrl(baseUrl);
             }else{
-                rtBuilder.baseUrl(Mobile.getBaseUrl());
+                rtBuilder.baseUrl(""); // TODO: 2016/12/2
             }
             if(isAddSession){
                 okBuild.addInterceptor(new HeaderInterceptor(context));
@@ -130,7 +130,7 @@ public class RtHttp{
                 okBuild.addInterceptor(new DynamicParameterInterceptor(addDynamicParameterMap));
             }
             //warning:must in the last intercepter to log the network;
-            if(Log.isDebuggable()){ //改成自己的显示log判断逻辑
+            if(isDebug){ //改成自己的显示log判断逻辑
                 okBuild.addInterceptor(new LogInterceptor());
             }
             if(convertFactory!=null){

@@ -27,17 +27,17 @@ public class WebApi extends BaseApi {
         return networkApi;
     }
 
-    public static NetworkApi getRollerApi(HashMap map) {
-        return getNetworkApi(Web.getRollerUrl(), map);
-    }
-
-    public static NetworkApi getFruitApi(HashMap map) {
-        return getNetworkApi(Web.getFruitUrl(), map);
-    }
-
-    public static NetworkApi getWxApi(HashMap map) {
-        return getNetworkApi(Web.getWXUrl(), map);
-    }
+    //public static NetworkApi getRollerApi(HashMap map) {
+    //    return getNetworkApi(Web.getRollerUrl(), map);
+    //}
+    //
+    //public static NetworkApi getFruitApi(HashMap map) {
+    //    return getNetworkApi(Web.getFruitUrl(), map);
+    //}
+    //
+    //public static NetworkApi getWxApi(HashMap map) {
+    //    return getNetworkApi(Web.getWXUrl(), map);
+    //}
 
     public static Observable getObserable(Observable observable) {
         observable = new ObserableBuilder(observable)
@@ -46,23 +46,9 @@ public class WebApi extends BaseApi {
         return observable;
     }
 
-    public static Observable webPost(HashMap map, String action, int type) {
-        NetworkApi networkApi = null;
-        if (type == ROLLER) {
-            networkApi = getRollerApi(map);
-        } else if (type == FRUIT) {
-            networkApi = getFruitApi(map);
-        } else if (type == WX) {
-            networkApi = getWxApi(map);
-        }
-        String[] str = action.split("/");
-        if (str.length == 1) {
-            observable = networkApi.webPost(str[0]);
-        } else if (str.length == 2) {
-            observable = networkApi.webPost(str[0], str[1]);
-        } else {
-            return null;
-        }
+    public static Observable post(HashMap map, String action) {
+        NetworkApi networkApi = getNetworkApi("http://gank.io/api/", map);
+        observable = networkApi.get(1);
         return getObserable(observable);
     }
 }

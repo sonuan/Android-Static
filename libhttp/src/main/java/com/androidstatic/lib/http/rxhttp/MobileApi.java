@@ -33,7 +33,7 @@ public class MobileApi extends BaseApi{
         return obserable;
     }
 
-    public static   Observable response(HashMap map, int protocolId) {
+    public static Observable response(HashMap map, int protocolId) {
         RequestBody body = toBody(map);
         return getObserable(getNetworkApi().response(protocolId, body));
     }

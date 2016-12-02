@@ -60,6 +60,10 @@ public class LogInterceptor implements Interceptor {
         return response;
     }
     private static String bodyToString(final RequestBody request) {
+        // FIXME: 2016/12/3
+        if (request == null) {
+            return "";
+        }
 
         try {
             final Buffer buffer = new Buffer();

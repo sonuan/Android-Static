@@ -13,7 +13,7 @@ public class ParameterInterceptor implements Interceptor {
         Request request = chain.request();
         //get请求后面追加共同的参数
         HttpUrl httpUrl = request.url().newBuilder()   //使用addQueryParameter()在url后面添加参数
-                .addQueryParameter("userId", CommonData.getUid()+"")
+                .addQueryParameter("userId", "")
                 .build();
         request = request.newBuilder().url(httpUrl).build();
         return chain.proceed(request);

@@ -18,7 +18,8 @@ public class MainActivity extends ExpandActivity {
     private String[] mTitles = new String[]{
             "管理多种状态,加载中视图、错误视图等",
             "图片加载封装",
-            "ListActivity封装"
+            "ListActivity封装",
+            "Retrofit封装-RtHttp"
     };
 
     @Override
@@ -44,6 +45,9 @@ public class MainActivity extends ExpandActivity {
                 break;
             case 2:
                 SimpleListActivity.toActivity(this);
+                break;
+            case 3:
+                RtHttpActivity.toActivity(this);
                 break;
         }
     }

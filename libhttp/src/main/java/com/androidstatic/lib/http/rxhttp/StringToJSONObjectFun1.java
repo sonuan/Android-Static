@@ -1,6 +1,8 @@
 package com.androidstatic.lib.http.rxhttp;
 
-import rx.Observable;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import rx.functions.Func1;
 
 /**
@@ -9,13 +11,15 @@ import rx.functions.Func1;
  * desc:
  */
 
-public class StringToJSONObjectFun1<T> implements Func1<ResponseInfo<T>, Observable<T>> {
+public class StringToJSONObjectFun1 implements Func1<String, JSONObject> {
 
     @Override
-    public Observable<T> call(ResponseInfo<T> responseInfo) {
-        if (responseInfo.getCode()!= 200) {  //如果code返回的不是200,则抛出ApiException异常，否则返回data数据
-            return Observable.error(new ApiException(responseInfo.getCode(),responseInfo.getMessage()));
+    public JSONObject call(String text) {
+        try {
+            return new JSONObject(text);
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
-        return Observable.just(responseInfo.getData());
+        return null;
     }
 }

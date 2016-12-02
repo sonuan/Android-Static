@@ -17,7 +17,7 @@ public class HeaderInterceptor implements Interceptor {
     public Response intercept(Chain chain) throws IOException {
         Request original = chain.request();
         Request.Builder requestBuilder = original.newBuilder()
-                .header("sessionId", CommonData.getUserInfo(context).sessionId); //添加sessionId
+                .header("sessionId", ""); //添加sessionId
         Request request = requestBuilder.build();
         return chain.proceed(request);
     }
